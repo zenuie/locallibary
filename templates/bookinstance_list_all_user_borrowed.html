@@ -1,10 +1,8 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-    {% if user.is_staff %}
+    {% if bookinstance_list and user.is_staff %}
     <h1>所有被借閱書籍</h1>
-
-    {% elif bookinstance_list %}
         <ul>
             {% for bookinst in bookinstance_list %}
                 <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
