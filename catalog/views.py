@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 
 # Create your views here.
@@ -6,8 +6,12 @@ from .models import Book, Author, BookInstance, Genre, Language
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.mixins import PermissionRequiredMixin
-
+# 驗證模組
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+import datetime
+from .forms import RenewBookForm
 
 @login_required
 def index(request):
@@ -106,9 +110,32 @@ class LoanedBookByUserListView(LoginRequiredMixin, generic.ListView):
         return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
 
 
-class OnlyStaffViewUserBorrowed(LoginRequiredMixin,generic.ListView):
+class OnlyStaffViewUserBorrowed(LoginRequiredMixin, generic.ListView):
     model = BookInstance
     template_name = 'bookinstance_list_all_user_borrowed.html'
 
     def get_queryset(self):
         return BookInstance.objects.filter(status__exact='o').order_by('due_back')
+
+
+def renew_book_librarian(request, pk):
+    """
+    讓館員用來更新書本具體資訊的功能
+    """
+    book_inst = get_object_or_404(BookInstance, pk=pk)
+    # 如果送來的是POST請求，就處理表單數據
+    if request.method == 'POST':
+
+        # 給予表單內容
+        form = RenewBookForm(request.POST)
+        # 確認表單是否有效
+        if form.is_vaild():
+            # 如果有效將其寫入due_back
+            book_inst.due_back = form.cleaned_data['renewal_date']
+            book_inst.save()
+            # 轉址到新URL
+            return HttpResponseRedirect(reverse('all-borrowed'))
+    else:
+        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
+        form = RenewBookForm(initial={'renewal_date': proposed_renewal_date, })
+    return render(request, 'catalog/book_renew_librarian.html', {'form': form, 'bookinst': book_inst})

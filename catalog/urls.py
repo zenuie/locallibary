@@ -9,11 +9,15 @@ urlpatterns = [
     path('authors/', views.AuthorListView.as_view(), name="authors"),
     path('author/<int:pk>', views.AuthorDetailView.as_view(), name="author-detail"),
 ]
-
+# 個人借閱書籍
 urlpatterns += [
     path('mybooks/', views.LoanedBookByUserListView.as_view(), name='my-borrowed')
 ]
-
+# 所有借閱書籍
 urlpatterns += [
     path('borrowed/', views.OnlyStaffViewUserBorrowed.as_view(), name='all-borrowed')
+]
+
+urlpatterns += [
+    path('book/<uuid:pk>/renew/', views.renew_book_librarian, name='renew-book-librarian'),
 ]
