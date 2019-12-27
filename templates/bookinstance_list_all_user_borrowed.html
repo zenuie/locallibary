@@ -1,19 +1,21 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-    {% if bookinstance_list and user.is_staff %}
-    <h1>所有被借閱書籍</h1>
-        <ul>
-            {% for bookinst in bookinstance_list %}
-                <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
-                    <a href="{% url 'book-detail' bookinst.book.pk %}">{{ bookinst.book.title }}</a>({{ bookinst.due_back }})
-                </li>
-            {% endfor %}
-        </ul>
-    {% elif user.is_authenticated %}
-        <h1>您沒有權限觀看</h1>
-    {% else %}
-        <p>沒有借閱的書籍</p>
-    {% endif %}
+
+{% if bookinstance_list and user.is_staff %}
+<h1>所有被借閱書籍</h1>
+<ul>
+  {% for bookinst in bookinstance_list %}
+  <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
+    <a href="{% url 'book-detail' bookinst.book.pk %}">{{ bookinst.book.title }}</a>-<a href="{% url 'book_renew_librarian' bookinst.id %}">Renew</a>({{ bookinst.due_back }})
+
+  </li>
+  {% endfor %}
+</ul>
+{% elif user.is_authenticated %}
+<h1>您沒有權限觀看</h1>
+{% else %}
+<p>沒有借閱的書籍</p>
+{% endif %}
 
 {% endblock %}
