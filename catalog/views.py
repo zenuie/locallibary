@@ -117,7 +117,7 @@ class OnlyStaffViewUserBorrowed(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         return BookInstance.objects.filter(status__exact='o').order_by('due_back')
 
-
+@permission_required('catalog. can_mark_returned')
 def renew_book_librarian(request, pk):
     """
     讓館員用來更新書本具體資訊的功能
@@ -125,7 +125,6 @@ def renew_book_librarian(request, pk):
     book_inst = get_object_or_404(BookInstance, pk=pk)
     # 如果送來的是POST請求，就處理表單數據
     if request.method == 'POST':
-
         # 給予表單內容
         form = RenewBookForm(request.POST)
         # 確認表單是否有效
