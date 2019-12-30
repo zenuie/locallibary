@@ -118,7 +118,7 @@ class OnlyStaffViewUserBorrowed(LoginRequiredMixin, generic.ListView):
         return BookInstance.objects.filter(status__exact='o').order_by('due_back')
 
 @permission_required('catalog. can_mark_returned')
-def renew_book_librarian(request, pk):
+def renew_book_librarian(LoginRequiredMixin,request, pk):
     """
     讓館員用來更新書本具體資訊的功能
     """
