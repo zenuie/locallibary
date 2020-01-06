@@ -7,13 +7,13 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # 驗證模組
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import datetime
 from .forms import RenewBookForm
-
+import atom
 
 @login_required
 def index(request):
@@ -124,7 +124,7 @@ def staff_required(login_url=None):
     return user_passes_test(lambda u: u.is_staff, login_url=login_url)
 
 
-@staff_required()
+@permission_required()
 def renew_book_librarian(request, pk):
     """
     讓館員用來更新書本具體資訊的功能
