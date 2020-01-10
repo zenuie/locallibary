@@ -9,10 +9,9 @@
 
     {% if next %}
         {% if user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed,
-                please login with an account that has access.</p>
+            <p>你的帳戶沒權限觀看此頁面</p>
         {% else %}
-            <p>Please login to see this page.</p>
+            <p>請先登入</p>
         {% endif %}
     {% endif %}
 

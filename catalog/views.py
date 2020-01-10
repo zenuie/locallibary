@@ -141,7 +141,7 @@ def renew_book_librarian(request, pk):
         # 給予表單內容
         form = RenewBookForm(request.POST)
         # 確認表單是否有效
-        if form.is_vaild():
+        if form.is_valid():
             # 如果有效將其寫入due_back
             book_inst.due_back = form.cleaned_data['renewal_date']
             book_inst.save()

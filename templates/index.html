@@ -1,21 +1,21 @@
 {% extends "base_generic.html" %}
 {% block content %}
-    <h1>Local Library Home</h1>
+<h1>塗書館</h1>
 
-    <p>Welcome to <em>LocalLibrary</em>, a very basic Django website developed as a tutorial example in the Mozilla
-        Developer Network.</p>
-    <h2>Dynamic content</h2>
+<p>安安你好 <em>歡迎來到塗書館</em></p>
+<h2>目前藏書及分類</h2>
 
-    <p>The library has the following record counts:</p>
-    <ul class="inline_label">
-        <li><strong>Books:</strong>{{ num_books }}</li>
-        <li><strong>Copies:</strong>{{ num_instances }}</li>
-        <li><strong>Copies available:</strong>{{ num_instances_available }}</li>
-        <li><strong>Authors:</strong>{{ num_authors }}</li>
-        <li><strong>Language:</strong>{{ num_language }}</li>
-    </ul>
-    <p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
+<p>藏書計數(持續增加中)</p>
+<ul class="inline_label">
+    <li><strong>書本數量:</strong>{{ num_books }}</li>
+    <li><strong>書本詳細資料筆數:</strong>{{ num_instances }}</li>
+    <li><strong>可用詳細資料:</strong>{{ num_instances_available }}</li>
+    <li><strong>作者人數:</strong>{{ num_authors }}</li>
+    <li><strong>語言種類:</strong>{{ num_language }}</li>
+</ul>
+<p>{% if num_visits <= 10 %}你已經偷看我{% else %}你484愛上我了，已經偷看我{% endif %} {{ num_visits }}次</p>
 {% endblock %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-<img src="{% static 'catalog/images/library-in-books-png_300953.jpg' %}" alt="My image" style="width: 555px;height: 540px">
+<img src="{% static 'catalog/images/library-in-books-png_300953.jpg' %}" alt="My image"
+     style="width: 555px;height: 540px">
