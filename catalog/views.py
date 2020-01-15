@@ -50,6 +50,15 @@ def staff_required(func):
     return auth
 
 
+def registered_people(func):
+    def auth(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login'))
+        return func(request, *args, **kwargs)
+
+    return auth
+
+
 class BookListView(LoginRequiredMixin, generic.ListView):
     model = Book
     paginate_by = 10
@@ -147,6 +156,29 @@ def renew_book_librarian(request, pk):
             book_inst.save()
             # 轉址到新URL
             return HttpResponseRedirect(reverse('all-borrowed'))
+    else:
+        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
+        form = RenewBookForm(initial={'renewal_date': proposed_renewal_date, })
+    return render(request, 'catalog/book_renew_librarian.html', {'form': form, 'bookinst': book_inst})
+
+
+@registered_people
+def renew_book_people(request, pk):
+    """
+    讓民眾用來更新書本具體資訊的功能
+    """
+    book_inst = get_object_or_404(BookInstance, pk=pk)
+    # 如果送來的是POST請求，就處理表單數據
+    if request.method == 'POST':
+        # 給予表單內容
+        form = RenewBookForm(request.POST)
+        # 確認表單是否有效
+        if form.is_valid():
+            # 如果有效將其寫入due_back
+            book_inst.due_back = form.cleaned_data['renewal_date']
+            book_inst.save()
+            # 轉址到新URL
+            return HttpResponseRedirect(reverse('my-borrowed'))
     else:
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
         form = RenewBookForm(initial={'renewal_date': proposed_renewal_date, })

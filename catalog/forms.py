@@ -6,7 +6,8 @@ import datetime  # for checking renewal date range.
 
 # 續借模組
 class RenewBookForm(forms.Form):
-    renewal_date = forms.DateField(help_text="輸入你要延長的時間，預設三個禮拜(最多延長四個禮拜)")
+    renewal_date = forms.DateField(widget=forms.SelectDateWidget(years=range(2019, 1970, -1)),
+                                   help_text="輸入你要延長的時間，預設三個禮拜(最多延長四個禮拜)")
 
     def clean_renewal_data(self):
         data = self.cleaned_data['renewal_date']

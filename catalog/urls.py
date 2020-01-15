@@ -17,7 +17,11 @@ urlpatterns += [
 urlpatterns += [
     path('borrowed/', views.OnlyStaffViewUserBorrowed.as_view(), name='all-borrowed')
 ]
-
+# 管理員延遲借書
 urlpatterns += [
     path('borrowed/<uuid:pk>/renew/', views.renew_book_librarian, name='renew-book-librarian'),
+]
+# 民眾延遲借書
+urlpatterns += [
+    path('borrowed/<uuid:pk>/people-renew/', views.renew_book_people, name='renew-book-people'),
 ]
