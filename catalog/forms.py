@@ -1,5 +1,6 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _  # 自動翻譯
 import datetime  # for checking renewal date range.
 
 
@@ -13,7 +14,7 @@ class RenewBookForm(forms.Form):
 
         # 判斷使用者輸入時間有沒有比現在時間更早
         if data < datetime.date.today():
-            forms.DateField(help_text='錯誤的時間，您輸入的時間為過去')
+            raise ValidationError(_('錯誤的時間，您輸入的時間為過去'))
 
         # 確認輸入時間沒超過最大值(4個禮拜)
         elif data > datetime.date.today() + datetime.timedelta(weeks=4):
