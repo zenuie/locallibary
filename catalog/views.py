@@ -161,7 +161,6 @@ def renew_book_librarian(request, pk):
         form = RenewBookForm(initial={'renewal_date': proposed_renewal_date, })
     return render(request, 'catalog/book_renew_librarian.html', {'form': form, 'bookinst': book_inst})
 
-
 @registered_people
 def renew_book_people(request, pk):
     """
@@ -175,7 +174,7 @@ def renew_book_people(request, pk):
         # 確認表單是否有效
         if form.is_valid():
             # 如果有效將其寫入due_back
-            book_inst.due_back = form.clean_renewal_data()
+            book_inst.due_back = form.cleaned_data['renewal_date']
             book_inst.save()
             # 轉址到新URL
             return HttpResponseRedirect(reverse('my-borrowed'))
