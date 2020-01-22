@@ -25,3 +25,9 @@ urlpatterns += [
 urlpatterns += [
     path('borrowed/<uuid:pk>/people-renew/', views.renew_book_people, name='renew-book-people'),
 ]
+# 新增作者
+urlpatterns += [
+    path('author/create', views.AuthorCreate.as_view(), name='author-create'),
+    path('author/<int:pk>/update/', views.AuthorUpdate.as_view(), name='author-update'),
+    path('author/<int:pk>/delete/', views.AuthorDelete.as_view(), name='author-delete'),
+]

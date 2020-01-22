@@ -1,19 +1,19 @@
-from django.contrib import messages
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 # Create your views here.
-from .models import Book, Author, BookInstance, Genre, Language
+from .models import Book, Author, BookInstance, Language
 from django.views import generic
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # 驗證模組
-from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import datetime
 from .forms import RenewBookForm
+# 新增刪除更新模組
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 
 def index(request):
@@ -161,6 +161,7 @@ def renew_book_librarian(request, pk):
         form = RenewBookForm(initial={'renewal_date': proposed_renewal_date, })
     return render(request, 'catalog/book_renew_librarian.html', {'form': form, 'bookinst': book_inst})
 
+
 @registered_people
 def renew_book_people(request, pk):
     """
@@ -182,3 +183,22 @@ def renew_book_people(request, pk):
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
         form = RenewBookForm(initial={'renewal_date': proposed_renewal_date, })
     return render(request, 'catalog/book_renew_librarian.html', {'form': form, 'bookinst': book_inst})
+
+
+class AuthorCreate(LoginRequiredMixin, CreateView):
+    model = Author
+    template_name = 'author_form/author_create_form.html'
+    fields = '__all__'
+    initial = {'逝世': 'Alive', }
+
+
+class AuthorUpdate(LoginRequiredMixin, UpdateView):
+    model = Author
+    fields = ['姓氏', '名字', '出生', "逝世"]
+    initial = {"逝世": 'Alive'}
+
+
+class AuthorDelete(LoginRequiredMixin, DeleteView):
+    model = Author
+    template_name = 'author_form/author_delete.html'
+    success_url = reverse_lazy('authors')

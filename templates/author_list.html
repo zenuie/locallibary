@@ -1,16 +1,15 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Author List</h1>
-    {% if author_list %}
-        <ul>
-            {% for author in author_list %}
-                <li>
-                    <a href="{{ author.get_absolute_url }}">{{ author.last_name }}, {{ author.first_name }}({{ author.data_of_birth }}-{{ author.data_of_death }})</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>There are no authors in the library.</p>
-    {% endif %}
+<h1>作者列表{% if user.is_staff %}<font size="2">-<a href="{% url 'author-create' %}">新增作者</a></font>{% endif %}</h1>
+
+{% if author_list %}
+{% for author in author_list %}
+<li>
+    <a href="{{ author.get_absolute_url }}">{{ author.last_name }}, {{ author.first_name }}-({{ author.data_of_birth }}-{% if author.data_of_death == none %} Alive {% else %}{{ author.data_of_death }} {% endif %})</a>
+</li>
+{% endfor %}
+{% else %}
+<p>此作者不在裡面喔.</p>
+{% endif %}
 {% endblock %}

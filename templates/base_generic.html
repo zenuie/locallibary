@@ -34,6 +34,7 @@
                 <li><a href="{% url 'my-borrowed' %}">已借閱的書籍</a></li>
                 <li><a href="{% url 'logout' %}?next={{ request.path }}">登出</a></li>
                 {% endif %}
+                <!--管理者權限使用-->
                 {% if user.is_staff %}
                 <br/>
                 <li>管理者</li>

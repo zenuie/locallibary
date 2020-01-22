@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+{% block content %}
+
+<h1>刪除作者</h1>
+<p>你確定要刪除該作者 {{ author }} ?</p>
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="是的，刪除">
+</form>
+{% endblock %}
