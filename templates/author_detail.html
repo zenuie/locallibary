@@ -1,7 +1,9 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h1>作者: {{ author }}</h1>
+<h1>作者: {{ author }}<font size="2">-<a href="{% url 'author-update' author.id %}">修改該作者</a></font></h1>
+<font size="2"><a href="{% url 'author-delete' author.id %}">刪除該作者</a></font>
+
 <p>({{ author.data_of_birth }}-{% if author.data_of_death == none %} Alive {% else %}{{ author.data_of_death }} {% endif %})</p>
 
     <div style="margin-left: 20px;margin-top: 20px">

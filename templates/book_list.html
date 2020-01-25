@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Book List</h1>
+    <font size="2"><a href="{% url 'book-create' %}">新增書籍</a> </font>
     {% if book_list %}
         <ul>
             {% for book in book_list %}

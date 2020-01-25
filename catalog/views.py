@@ -184,21 +184,28 @@ def renew_book_people(request, pk):
         form = RenewBookForm(initial={'renewal_date': proposed_renewal_date, })
     return render(request, 'catalog/book_renew_librarian.html', {'form': form, 'bookinst': book_inst})
 
-
+#新增作者
 class AuthorCreate(LoginRequiredMixin, CreateView):
     model = Author
     template_name = 'author_form/author_create_form.html'
     fields = '__all__'
     initial = {'逝世': 'Alive', }
 
-
+#編輯作者
 class AuthorUpdate(LoginRequiredMixin, UpdateView):
     model = Author
-    fields = ['姓氏', '名字', '出生', "逝世"]
+    template_name = 'author_form/author_create_form.html'
+    fields = '__all__'
     initial = {"逝世": 'Alive'}
 
-
+#刪除作者
 class AuthorDelete(LoginRequiredMixin, DeleteView):
     model = Author
     template_name = 'author_form/author_delete.html'
     success_url = reverse_lazy('authors')
+
+#新增書籍
+class BookCreate(LoginRequiredMixin,CreateView):
+    model = Book
+    template_name = 'book_form/book_create.html'
+    fields = '__all__'

@@ -142,9 +142,9 @@ class BookInstance(models.Model):
 
 # 作者模組
 class Author(models.Model):
-    first_name = models.CharField('名字',max_length=100)
-    last_name = models.CharField('姓氏',max_length=100)
-    data_of_birth = models.DateField('出生',null=True, blank=True)
+    first_name = models.CharField('名字', max_length=100)
+    last_name = models.CharField('姓氏', max_length=100)
+    data_of_birth = models.DateField('出生', null=True, blank=True)
     data_of_death = models.DateField('逝世', null=True, blank=True)
 
     class Meta:
@@ -155,6 +155,3 @@ class Author(models.Model):
 
     def __str__(self):
         return f'{self.last_name},{self.first_name}'
-
-
-
